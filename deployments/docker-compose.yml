@@ -1,10 +1,10 @@
 version: '3'
 services:
   # url app
-  url_app:
-    build: .
-    ports:
-      - "5000:5000"
+#  url_app:
+#    build: .
+#    ports:
+#      - "5000:5000"
   #Nginx Service
   webserver:
     image: nginx:alpine
