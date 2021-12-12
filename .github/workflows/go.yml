@@ -7,10 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v2.5.2
+    
     - uses: actions/checkout@v2
 
     - name: Set up Go
