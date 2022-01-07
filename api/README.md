@@ -1,8 +1,14 @@
-# `/api`
+Выбор роутера для проекта:
+Критерии: 
+	небольшая, быстрая библиотека (не фрейморк), наличие готовых midlware, наличие документации
 
-OpenAPI/Swagger specs, JSON schema files, protocol definition files.
+1. beego, gin
+   - Избыточны для мелкого проекта с только серверной частью, много внешних зависимостей
 
-Examples:
+2. echo, fasthttp, fiber - из документации только readme с примером
+3. mux - ищут нового сопровождающего
+4. Kratos - все есть, + автогенерация от swaggera, хотя и фреймворк, но не кажется сложным
 
-* https://github.com/kubernetes/kubernetes/tree/master/api
-* https://github.com/moby/moby/tree/master/api
+Пока остановлюсь на Kratos из-за примеров и документации
+Понравилось, что генерит сервер, включая makefile и docker
+echo, fasthttp, fiber - эти ребята объективно лучше подходят, но попробую Кратос
