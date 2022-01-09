@@ -10,14 +10,10 @@
 package main
 
 import (
-	sw "./url"
-	"log"
+	"url/internal/butty"
 )
 
 func main() {
-	log.Printf("Server started")
-
-	router := sw.NewRouter()
-
-	log.Fatal(router.Run(":80"))
+	bs := butty.NewButtyService()
+	bs.Run()
 }
