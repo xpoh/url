@@ -37,17 +37,17 @@ run:
   # "/" will be replaced by current OS file path separator to properly work
   # on Windows.
   skip-files:
-    - ".*\\.my\\.go$"
-    - lib/bad.go
+    - ".*\\.my\\.url$"
+    - lib/bad.url
 
-  # by default isn't set. If set we pass it to "go list -mod={option}". From "go help modules":
-  # If invoked with -mod=readonly, the go command is disallowed from the implicit
-  # automatic updating of go.mod described above. Instead, it fails when any changes
-  # to go.mod are needed. This setting is most useful to check that go.mod does
+  # by default isn't set. If set we pass it to "url list -mod={option}". From "url help modules":
+  # If invoked with -mod=readonly, the url command is disallowed from the implicit
+  # automatic updating of url.mod described above. Instead, it fails when any changes
+  # to url.mod are needed. This setting is most useful to check that url.mod does
   # not need updates, such as in a continuous integration and testing system.
-  # If invoked with -mod=vendor, the go command assumes that the vendor
+  # If invoked with -mod=vendor, the url command assumes that the vendor
   # directory holds the correct copies of dependencies and ignores
-  # the dependency descriptions in go.mod.
+  # the dependency descriptions in url.mod.
   modules-download-mode: mod
   #modules-download-mode: readonly|vendor|mod
 
@@ -283,8 +283,8 @@ linters-settings:
         # Comma-separated list of file paths containing ruleguard rules.
         # If a path is relative, it is relative to the directory where the golangci-lint command is executed.
         # The special '${configDir}' variable is substituted with the absolute directory containing the golangci config file.
-        # Glob patterns such as 'rules-*.go' may be specified.
-        rules: '${configDir}/ruleguard/rules-*.go,${configDir}/myrule1.go'
+        # Glob patterns such as 'rules-*.url' may be specified.
+        rules: '${configDir}/ruleguard/rules-*.url,${configDir}/myrule1.url'
       truncateCmp:
         # whether to skip int/uint/uintptr types (default true)
         skipArchDependent: true
@@ -391,15 +391,15 @@ linters-settings:
 
     # settings per analyzer
     settings:
-      printf: # analyzer name, run `go tool vet help` to see all analyzers
-        funcs: # run `go tool vet help printf` to see available settings for `printf` analyzer
+      printf: # analyzer name, run `url tool vet help` to see all analyzers
+        funcs: # run `url tool vet help printf` to see available settings for `printf` analyzer
           - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
           - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
           - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
           - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
 
     # enable or disable analyzers by name
-    # run `go tool vet help` to see all analyzers
+    # run `url tool vet help` to see all analyzers
     enable:
       - atomicalign
     enable-all: false
@@ -606,7 +606,7 @@ linters-settings:
 
   testpackage:
     # regexp pattern to skip files
-    skip-regexp: (export|internal)_test\.go
+    skip-regexp: (export|internal)_test\.url
 
   thelper:
     # The following configurations enable all checks. It can be omitted because all checks are enabled by default.
@@ -625,7 +625,7 @@ linters-settings:
       begin: true
 
   tenv:
-    # The option `all` will run against whole test files (`_test.go`) regardless of method/function signatures.
+    # The option `all` will run against whole test files (`_test.url`) regardless of method/function signatures.
     # By default, only methods that take `*testing.T`, `*testing.B`, and `testing.TB` as arguments are checked.
     all: false
 
