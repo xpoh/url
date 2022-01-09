@@ -1,0 +1,80 @@
+openapi: 3.0.3
+info:
+  title: url butty maker
+  description: url butty maker
+  version: 1.0.0
+servers:
+#  - url: 'http://3.121.161.47'
+  - url: '0.0.0.0'
+
+components:
+  securitySchemes:
+    oAuth: # <---- arbitrary name
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        implicit: # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+          authorizationUrl: https://oauth.yandex.com/authorize
+          tokenUrl: https://oauth.yandex.com/token
+          scopes: {}
+
+paths:
+  /{url}:
+    get:
+      summary: redirect to url by butty
+      parameters:
+        - name: url
+          in: path
+          description: butty url for redirect
+          required: true
+
+      responses:
+        308:
+          description: Succesful redirected
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: URL
+        404:
+          description: Not find butty url
+          content: { }
+
+  /butty/{userId}/{url}/:
+    post:
+      summary: create butty url
+
+      parameters:
+        - name: url
+          in: path
+          description: url for create butty url
+          required: true
+
+        - name: userId
+          in: path
+          description: userId parametr
+          required: true
+
+      security:
+        - oAuth: []
+
+      responses:
+        200:
+          description: Succeful redirected
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: URL
+        500:
+          description: Internal server error
+          content: {}
+
+
+        401:
+          description: Non auth
+          content: {}
+
+
+
+
