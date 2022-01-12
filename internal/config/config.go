@@ -1,4 +1,4 @@
-package Config
+package config
 
 import (
 	"go.uber.org/zap/zapcore"
@@ -11,8 +11,9 @@ type ConfigLoader interface {
 
 type Cfg struct {
 	Service struct {
-		WorkersCount int           `yaml:"WorkersCount"`
-		LogLevel     zapcore.Level `yaml:"LogLevel"`
+		WorkersCount   int           `yaml:"WorkersCount"`
+		LogLevel       zapcore.Level `yaml:"LogLevel"`
+		LinksLivesDays int           `yaml:"LinksLivesDays"`
 	}
 }
 

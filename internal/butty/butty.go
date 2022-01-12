@@ -8,25 +8,32 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"url/cmd/url"
-	"url/internal/Config"
+	"url/internal/config"
+	"url/internal/storage"
 )
 
 type ButtyService struct {
-	cfg    *Config.Cfg
+	cfg    *config.Cfg
 	logger *zap.Logger
-}
 
-type Link struct {
-	shortUrl string `json:"shortUrl"`
-	url      string `json:"url"`
+	urlIn  chan string
+	urlOut chan string
+	rwmux  sync.RWMutex
+	rmux   sync.Mutex
+
+	storage storage.Storager
 }
 
 func NewButtyService() *ButtyService {
 	bs := ButtyService{}
-	cfg := Config.NewConfig()
+	cfg := config.NewConfig()
 	bs.cfg = cfg
+	bs.urlOut = make(chan string, 1)
+	bs.urlIn = make(chan string, 1)
+	bs.storage, _ = storage.NewInMemoryStorage()
 	return &bs
 }
 
@@ -59,7 +66,12 @@ func (bs *ButtyService) InitLogger() {
 
 func (bs *ButtyService) Run() {
 	bs.InitLogger()
-	defer bs.logger.Sync()
+	defer func() {
+		err := bs.logger.Sync()
+		if err != nil {
+
+		}
+	}()
 	bs.logger.Info("Using zap logger...")
 
 	go func() {
@@ -70,7 +82,7 @@ func (bs *ButtyService) Run() {
 	}()
 
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, syscall.SIGUSR1)
+	signal.Notify(c, syscall.SIGINT)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	bs.cfg.Service.WorkersCount = 10
@@ -81,7 +93,7 @@ func (bs *ButtyService) Run() {
 	for {
 		s := <-c
 		switch s {
-		case syscall.SIGUSR1:
+		case syscall.SIGINT:
 			bs.logger.Info("Get signal SIGUSR1")
 			cancel()
 		}

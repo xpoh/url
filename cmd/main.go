@@ -10,10 +10,17 @@
 package main
 
 import (
+	"url/cmd/url"
 	"url/internal/butty"
 )
 
 func main() {
 	bs := butty.NewButtyService()
-	bs.Run()
+	go bs.Run()
+
+	router := url.NewRouter()
+	err := router.Run(":80")
+	if err != nil {
+
+	}
 }

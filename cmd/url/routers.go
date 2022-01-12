@@ -51,7 +51,7 @@ func NewRouter() *gin.Engine {
 
 // Index is the index handler.
 func Index(c *gin.Context) {
-	c.String(http.StatusOK, "Hello World!")
+	c.String(http.StatusOK, "Welcome to butty service (version ...)") // TODO Implement version
 }
 
 var routes = Routes{

@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/gin-gonic/gin v1.7.7
 	go.uber.org/zap v1.20.0
-	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
