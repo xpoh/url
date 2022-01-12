@@ -8,25 +8,40 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
+	"time"
 	"url/cmd/url"
-	"url/internal/Config"
+	"url/internal/config"
+	"url/internal/storage"
 )
 
 type ButtyService struct {
-	cfg    *Config.Cfg
+	cfg    *config.Cfg
 	logger *zap.Logger
+
+	urlIn  chan string
+	urlOut chan string
+	rwmux  sync.RWMutex
+	rmux   sync.Mutex
+
+	storage storage.Storager
 }
 
 type Link struct {
-	shortUrl string `json:"shortUrl"`
-	url      string `json:"url"`
+	ShortUrl    string `json:"ShortUrl"`
+	Url         string `json:"Url"`
+	CreatedDate time.Time
+	Id          int
 }
 
 func NewButtyService() *ButtyService {
 	bs := ButtyService{}
-	cfg := Config.NewConfig()
+	cfg := config.NewConfig()
 	bs.cfg = cfg
+	bs.urlOut = make(chan string, 1)
+	bs.urlIn = make(chan string, 1)
+	bs.storage, _ = storage.NewInMemoryStorage()
 	return &bs
 }
 

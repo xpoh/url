@@ -1,6 +1,7 @@
-Service:
-  LogLevel: debug
+service:
   WorkersCount: 10
+  LogLevel: debug
+  LinksLivesDays: 30
 server:
   http:
     addr: 0.0.0.0:8000
