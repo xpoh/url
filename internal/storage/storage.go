@@ -32,7 +32,7 @@ func NewInMemoryStorage() (*InMemoryStorage, error) {
 	s := &InMemoryStorage{}
 	s.Storage = map[string]Link{}
 	s.FreeLinksId = map[int]bool{}
-	for j := 0; j < math.MaxInt; j++ {
+	for j := 0; j < 10; j++ {
 		s.FreeLinksId[j] = false
 	}
 	return s, nil
@@ -67,7 +67,7 @@ func (i *InMemoryStorage) getFullUrlByButty(buttyUrl string) (string, error) {
 func (i *InMemoryStorage) newButtyUrl(url string) (string, error) {
 	i.mux.Lock()
 	defer i.mux.Unlock()
-	for j := 0; j < math.MaxInt; j++ {
+	for j := 0; j < 10; j++ {
 		if !i.FreeLinksId[j] {
 			i.FreeLinksId[j] = true
 			i.Storage[idToUrl(j)] = Link{

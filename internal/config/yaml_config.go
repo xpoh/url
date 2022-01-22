@@ -10,16 +10,16 @@ type yamlConfig struct{}
 
 func (y yamlConfig) load() Cfg {
 	cfg := Cfg{}
-	yamlFile, err := os.ReadFile("./configs/config.yaml")
+	yamlFile, err := os.ReadFile("config.yaml")
 
 	if err != nil {
-		log.Panicln(err)
+		log.Panicf("%v", err)
 	}
 
 	err = yaml.Unmarshal(yamlFile, &cfg)
 
 	if err != nil {
-		log.Panicln(err)
+		log.Panicf("%v", err)
 	}
 	return cfg
 }

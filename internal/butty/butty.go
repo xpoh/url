@@ -79,7 +79,7 @@ func (bs *Service) Run() {
 	}()
 	bs.logger.Info("Using zap logger...")
 
-	go bs.StartGin()
+	bs.StartGin()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT)

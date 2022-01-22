@@ -15,5 +15,5 @@ import (
 
 func main() {
 	bs := butty.NewButtyService()
-	go bs.Run()
+	bs.Run()
 }
