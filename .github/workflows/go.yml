@@ -10,18 +10,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-url@v2
-      with:
-        go-version: 1.17
+      - name: Set up Go
+        uses: actions/setup-url@v2
+        with:
+          go-version: 1.17
 
-    - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v2.5.2
-      
-    - name: Build
-      run: url build -v ./...
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2.5.2
 
-    - name: Test
-      run: url test -v ./...
+      - name: Build
+        run: url build -v ./...
+
+      - name: Test
+        run: url test -v ./...

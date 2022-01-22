@@ -3,17 +3,18 @@ package butty
 import (
 	"context"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"url/cmd/url"
-	"url/internal/Config"
+	"url/internal/config"
+	"url/internal/storage"
 )
 
-type ButtyService struct {
+type Service struct {
 	cfg    *config.Cfg
 	logger *zap.Logger
 
@@ -25,8 +26,8 @@ type ButtyService struct {
 	storage storage.Storager
 }
 
-func NewButtyService() *ButtyService {
-	bs := ButtyService{}
+func NewButtyService() *Service {
+	bs := Service{}
 	cfg := config.NewConfig()
 	bs.cfg = cfg
 	bs.urlOut = make(chan string, 1)
@@ -35,7 +36,7 @@ func NewButtyService() *ButtyService {
 	return &bs
 }
 
-func (bs *ButtyService) InitLogger() {
+func (bs *Service) InitLogger() {
 	rawJSON := []byte(`{
 	  "level": "debug",
 	  "encoding": "json",
@@ -62,7 +63,13 @@ func (bs *ButtyService) InitLogger() {
 	bs.logger.Info("logger construction succeeded")
 }
 
-func (bs *ButtyService) Run() {
+func (bs *Service) StartGin() {
+	log.Printf("Server started")
+	router := url.NewRouter()
+	log.Fatal(router.Run(bs.cfg.Server.Http.Addr))
+}
+
+func (bs *Service) Run() {
 	bs.InitLogger()
 	defer func() {
 		err := bs.logger.Sync()
@@ -72,12 +79,7 @@ func (bs *ButtyService) Run() {
 	}()
 	bs.logger.Info("Using zap logger...")
 
-	go func() {
-		log.Printf("Server started")
-		router := url.NewRouter()
-		gin.SetMode(gin.ReleaseMode)
-		log.Fatal(router.Run(":80"))
-	}()
+	go bs.StartGin()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT)
@@ -98,7 +100,7 @@ func (bs *ButtyService) Run() {
 	}
 }
 
-func (bs *ButtyService) worker(ctx context.Context) {
+func (bs *Service) worker(ctx context.Context) {
 	bs.logger.Debug("worker", zap.String("message", "Start worker"))
 	for {
 		select {
