@@ -8,11 +8,9 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"url/cmd/url"
-	"url/internal/config"
-	"url/internal/storage"
+	"url/internal/Config"
 )
 
 type ButtyService struct {
