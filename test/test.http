@@ -1,6 +1,5 @@
-POST http://localhost:8000/butty/item
-Content-Type: application/x-www-form-urlencoded
-
-id=99&content=new-element
+GET http://localhost:8000/1
 
 ###
+
+POST http://localhost:8000/butty/rbc.ru

@@ -6,33 +6,42 @@ import (
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
-	"url/cmd/url"
 	"url/internal/config"
 	"url/internal/storage"
 )
 
+var buttyService *Service
+
 type Service struct {
-	cfg    *config.Cfg
-	logger *zap.Logger
-
-	urlIn  chan string
-	urlOut chan string
-	rwmux  sync.RWMutex
-	rmux   sync.Mutex
-
-	storage storage.Storager
+	Cfg     *config.Cfg
+	Logger  *zap.Logger
+	Storage storage.Storager
 }
 
-func NewButtyService() *Service {
+func NewButtyService() {
 	bs := Service{}
 	cfg := config.NewConfig()
-	bs.cfg = cfg
-	bs.urlOut = make(chan string, 1)
-	bs.urlIn = make(chan string, 1)
-	bs.storage, _ = storage.NewInMemoryStorage()
-	return &bs
+
+	bs.InitLogger()
+	defer func() {
+		err := bs.Logger.Sync()
+		if err != nil {
+		}
+	}()
+	bs.Logger.Debug("Init zap Logger.")
+
+	bs.Cfg = cfg
+	bs.Storage, _ = storage.NewInMemoryStorage()
+
+	buttyService = &bs
+}
+
+func GetService() *Service {
+	if buttyService == nil {
+		panic("butty service is nil")
+	}
+	return buttyService
 }
 
 func (bs *Service) InitLogger() {
@@ -55,36 +64,20 @@ func (bs *Service) InitLogger() {
 	}
 	var err error
 
-	bs.logger, err = cfg.Build()
+	bs.Logger, err = cfg.Build()
 	if err != nil {
 		panic(err)
 	}
-	bs.logger.Info("logger construction succeeded")
-}
-
-func (bs *Service) StartGin() {
-	bs.logger.Info("Server started")
-	router := url.NewRouter()
-	bs.logger.Fatal("Error start http server", zap.Error(router.Run(bs.cfg.Server.Http.Addr)))
+	bs.Logger.Info("Logger construction succeeded")
 }
 
 func (bs *Service) Run() {
-	bs.InitLogger()
-	defer func() {
-		err := bs.logger.Sync()
-		if err != nil {
-		}
-	}()
-	bs.logger.Debug("Init zap logger.")
-
-	bs.StartGin()
-
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT)
 	ctx, cancel := context.WithCancel(context.Background())
 
-	bs.cfg.Service.WorkersCount = 10
-	for i := 0; i < bs.cfg.Service.WorkersCount; i++ {
+	bs.Cfg.Service.WorkersCount = 10
+	for i := 0; i < bs.Cfg.Service.WorkersCount; i++ {
 		go bs.worker(ctx)
 	}
 
@@ -92,18 +85,18 @@ func (bs *Service) Run() {
 		s := <-c
 		switch s {
 		case syscall.SIGINT:
-			bs.logger.Info("Get signal SIGUSR1")
+			bs.Logger.Info("Get signal SIGUSR1")
 			cancel()
 		}
 	}
 }
 
 func (bs *Service) worker(ctx context.Context) {
-	bs.logger.Debug("worker", zap.String("message", "Start worker"))
+	bs.Logger.Debug("worker", zap.String("message", "Start worker"))
 	for {
 		select {
 		case <-ctx.Done():
-			bs.logger.Debug("worker", zap.String("message", "Stop worker"))
+			bs.Logger.Debug("worker", zap.String("message", "Stop worker"))
 			return
 		}
 	}

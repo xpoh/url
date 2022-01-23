@@ -61,7 +61,7 @@ paths:
                 type: string
                 format: URL
         500:
-          description: Internal server error
+          description: Internal api error
           content: { }
         401:
           description: Non auth
