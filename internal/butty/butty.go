@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"go.uber.org/zap"
-	"log"
 	"os"
 	"os/signal"
 	"sync"
@@ -64,9 +63,9 @@ func (bs *Service) InitLogger() {
 }
 
 func (bs *Service) StartGin() {
-	log.Printf("Server started")
+	bs.logger.Info("Server started")
 	router := url.NewRouter()
-	log.Fatal(router.Run(bs.cfg.Server.Http.Addr))
+	bs.logger.Fatal("Error start http server", zap.Error(router.Run(bs.cfg.Server.Http.Addr)))
 }
 
 func (bs *Service) Run() {
@@ -74,10 +73,9 @@ func (bs *Service) Run() {
 	defer func() {
 		err := bs.logger.Sync()
 		if err != nil {
-
 		}
 	}()
-	bs.logger.Info("Using zap logger...")
+	bs.logger.Debug("Init zap logger.")
 
 	bs.StartGin()
 

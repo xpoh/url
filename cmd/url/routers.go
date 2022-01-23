@@ -45,6 +45,7 @@ func NewRouter() *gin.Engine {
 			router.DELETE(route.Pattern, route.HandlerFunc)
 		}
 	}
+	router.Use()
 
 	return router
 }
