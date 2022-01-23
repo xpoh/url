@@ -9,9 +9,9 @@ import (
 
 // Storager interface for ...
 type Storager interface {
-	getFullUrlByButty(buttyUrl string) (string, error)
-	newButtyUrl(url string) (string, error)
-	clearOldLinks(days int) error
+	GetFullUrlByButty(buttyUrl string) (string, error)
+	NewButtyUrl(url string) (string, error)
+	ClearOldLinks(days int) error
 }
 
 type Link struct {
@@ -51,7 +51,7 @@ func (o OverFlowError) Error() string {
 }
 
 // getFullUrlByButty достает из хранилища ссылку по красивой ссылке
-func (i *InMemoryStorage) getFullUrlByButty(buttyUrl string) (string, error) {
+func (i *InMemoryStorage) GetFullUrlByButty(buttyUrl string) (string, error) {
 	i.mux.RLock()
 	defer i.mux.RUnlock()
 
@@ -64,7 +64,7 @@ func (i *InMemoryStorage) getFullUrlByButty(buttyUrl string) (string, error) {
 
 //newButtyUrl генерит и добавляет в хранилище новую ссылку,
 // считается, что у ссылки есть время жизни и в хранилище могут быть более красивые ссылки раньше
-func (i *InMemoryStorage) newButtyUrl(url string) (string, error) {
+func (i *InMemoryStorage) NewButtyUrl(url string) (string, error) {
 	i.mux.Lock()
 	defer i.mux.Unlock()
 	for j := 0; j < 10; j++ {
@@ -86,7 +86,7 @@ func idToUrl(id int) string {
 	return strconv.FormatUint(uint64(id), 36)
 }
 
-func (i *InMemoryStorage) clearOldLinks(days int) error {
+func (i *InMemoryStorage) ClearOldLinks(days int) error {
 	i.mux.Lock()
 	defer i.mux.Unlock()
 
