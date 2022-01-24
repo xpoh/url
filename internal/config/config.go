@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var config *Cfg
+
 type ConfigLoader interface {
 	load() Cfg
 }
@@ -22,12 +24,26 @@ type Cfg struct {
 			Timeout time.Duration `yaml:"timeout"`
 		}
 	}
+	Data struct {
+		Database struct {
+			Driver string `yaml:"driver"`
+			Source string `yaml:"source"`
+		}
+	}
 }
 
 func NewConfig() *Cfg {
 	log.Println("Load yaml config file...")
-	cfg := yamlConfig{}.load() // TODO check read yaml
+	cfg := yamlConfig{}.load()
 	log.Println("WorkersCount=", cfg.Service.WorkersCount)
 	log.Printf("%v\n", cfg)
-	return &cfg
+	config = &cfg
+	return config
+}
+
+func GetConfig() *Cfg {
+	if config == nil {
+		panic("get nil config error!!!")
+	}
+	return config
 }

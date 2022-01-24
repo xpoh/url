@@ -1,14 +1,13 @@
 package butty
 
 import (
-	"context"
-	"encoding/json"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
 	"url/internal/config"
 	"url/internal/storage"
+	"url/pkg/logger"
 )
 
 var buttyService *Service
@@ -21,20 +20,22 @@ type Service struct {
 
 func NewButtyService() {
 	bs := Service{}
-	cfg := config.NewConfig()
-
-	bs.InitLogger()
-	defer func() {
-		err := bs.Logger.Sync()
-		if err != nil {
-		}
-	}()
-	bs.Logger.Debug("Init zap Logger.")
-
-	bs.Cfg = cfg
-	bs.Storage, _ = storage.NewInMemoryStorage()
-
 	buttyService = &bs
+
+	bs.Cfg = config.NewConfig()
+	bs.Logger = logger.New(bs.Cfg.Service.LogLevel)
+
+	switch bs.Cfg.Data.Database.Source {
+	case "inmemory":
+		bs.Logger.Info("NewButtyService", zap.String("database", "inmemory"))
+		bs.Storage, _ = storage.NewInMemoryStorage()
+	case "mysql":
+		bs.Logger.Info("NewButtyService", zap.String("database", "mysql"))
+		bs.Storage = storage.NewMysqlStorage()
+	default:
+		bs.Logger.Panic("NewButtyService", zap.String("database", "Unknown database driver"))
+		panic("Unknown database driver")
+	}
 }
 
 func GetService() *Service {
@@ -44,60 +45,34 @@ func GetService() *Service {
 	return buttyService
 }
 
-func (bs *Service) InitLogger() {
-	rawJSON := []byte(`{
-	  "level": "debug",
-	  "encoding": "json",
-	  "outputPaths": ["stdout", "/tmp/logs"],
-	  "errorOutputPaths": ["stderr"],
-	  "initialFields": {"foo": "bar"},
-	  "encoderConfig": {
-	    "messageKey": "message",
-	    "levelKey": "level",
-	    "levelEncoder": "lowercase"
-	  }
-	}`)
-	// TODO make loglevel
-	var cfg zap.Config
-	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
-		panic(err)
-	}
-	var err error
-
-	bs.Logger, err = cfg.Build()
-	if err != nil {
-		panic(err)
-	}
-	bs.Logger.Info("Logger construction succeeded")
-}
-
 func (bs *Service) Run() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT)
-	ctx, cancel := context.WithCancel(context.Background())
 
-	bs.Cfg.Service.WorkersCount = 10
-	for i := 0; i < bs.Cfg.Service.WorkersCount; i++ {
-		go bs.worker(ctx)
-	}
+	//ctx, cancel := context.WithCancel(context.Background())
+	//bs.Cfg.Service.WorkersCount = 10
+	//for i := 0; i < bs.Cfg.Service.WorkersCount; i++ {
+	//	go bs.worker(ctx)
+	//}
 
 	for {
 		s := <-c
 		switch s {
 		case syscall.SIGINT:
 			bs.Logger.Info("Get signal SIGUSR1")
-			cancel()
+			bs.Storage.Close()
+			//cancel()
 		}
 	}
 }
 
-func (bs *Service) worker(ctx context.Context) {
-	bs.Logger.Debug("worker", zap.String("message", "Start worker"))
-	for {
-		select {
-		case <-ctx.Done():
-			bs.Logger.Debug("worker", zap.String("message", "Stop worker"))
-			return
-		}
-	}
-}
+//func (bs *Service) worker(ctx context.Context) {
+//	bs.Logger.Debug("worker", zap.String("message", "Start worker"))
+//	for {
+//		select {
+//		case <-ctx.Done():
+//			bs.Logger.Debug("worker", zap.String("message", "Stop worker"))
+//			return
+//		}
+//	}
+//}

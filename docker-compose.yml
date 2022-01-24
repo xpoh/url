@@ -35,8 +35,14 @@ services:
       MYSQL_USER: butty
       MYSQL_PASSWORD: butty
       MYSQL_DATABASE: butty
+      MYSQL_TIME_ZONE: '+03:00'
 
-## Create shared "photoprism-develop" network for connecting with services in other docker-compose.yml files
+  client:
+    image: nginx
+    ports:
+      - "80:80"
+
+## Create shared "butty" network for connecting with services in other docker-compose.yml files
 networks:
   default:
     name: butty
