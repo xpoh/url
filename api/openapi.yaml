@@ -5,6 +5,7 @@ info:
   version: 1.0.0
 servers:
 #  - url: 'http://3.121.161.47'
+  - url: '0.0.0.0'
 
 components:
   securitySchemes:
@@ -15,7 +16,7 @@ components:
         implicit: # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
           authorizationUrl: https://oauth.yandex.com/authorize
           tokenUrl: https://oauth.yandex.com/token
-          scopes: { }
+          scopes: {}
 
 paths:
   /{url}:
@@ -29,7 +30,7 @@ paths:
 
       responses:
         308:
-          description: Succeful redirected
+          description: Succesful redirected
           content:
             text/plain:
               schema:
@@ -39,7 +40,7 @@ paths:
           description: Not find butty url
           content: { }
 
-  /butty/{url}:
+  /butty/{userId}/{url}/:
     post:
       summary: create butty url
 
@@ -49,8 +50,13 @@ paths:
           description: url for create butty url
           required: true
 
+        - name: userId
+          in: path
+          description: userId parametr
+          required: true
+
       security:
-        - oAuth: [ ]
+        - oAuth: []
 
       responses:
         200:
@@ -61,11 +67,13 @@ paths:
                 type: string
                 format: URL
         500:
-          description: Internal api error
-          content: { }
+          description: Internal server error
+          content: {}
+
+
         401:
           description: Non auth
-          content: { }
+          content: {}
 
 
 

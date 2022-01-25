@@ -25,13 +25,15 @@ func NewButtyService() {
 	bs.Cfg = config.NewConfig()
 	bs.Logger = logger.New(bs.Cfg.Service.LogLevel)
 
-	switch bs.Cfg.Data.Database.Source {
+	switch bs.Cfg.Data.Database.Driver {
 	case "inmemory":
 		bs.Logger.Info("NewButtyService", zap.String("database", "inmemory"))
 		bs.Storage, _ = storage.NewInMemoryStorage()
+		bs.Logger.Info("Create inmemory storage", zap.Any("storage", bs.Storage))
 	case "mysql":
 		bs.Logger.Info("NewButtyService", zap.String("database", "mysql"))
 		bs.Storage = storage.NewMysqlStorage()
+		bs.Logger.Info("Create mysql storage", zap.Any("storage", bs.Storage))
 	default:
 		bs.Logger.Panic("NewButtyService", zap.String("database", "Unknown database driver"))
 		panic("Unknown database driver")
