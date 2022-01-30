@@ -8,15 +8,6 @@ servers:
   - url: '0.0.0.0'
 
 components:
-  securitySchemes:
-    oAuth: # <---- arbitrary name
-      type: oauth2
-      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
-      flows:
-        implicit: # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
-          authorizationUrl: https://oauth.yandex.com/authorize
-          tokenUrl: https://oauth.yandex.com/token
-          scopes: {}
 
 paths:
   /{url}:
@@ -40,7 +31,7 @@ paths:
           description: Not find butty url
           content: { }
 
-  /butty/{userId}/{url}/:
+  /butty/{url}/:
     post:
       summary: create butty url
 
@@ -49,14 +40,6 @@ paths:
           in: path
           description: url for create butty url
           required: true
-
-        - name: userId
-          in: path
-          description: userId parametr
-          required: true
-
-      security:
-        - oAuth: []
 
       responses:
         200:
@@ -70,10 +53,6 @@ paths:
           description: Internal server error
           content: {}
 
-
-        401:
-          description: Non auth
-          content: {}
 
 
 
