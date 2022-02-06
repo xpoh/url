@@ -4,18 +4,7 @@ info:
   description: url butty maker
   version: 1.0.0
 servers:
-  - url: 'http://3.121.161.47'
-
-components:
-  securitySchemes:
-    oAuth: # <---- arbitrary name
-      type: oauth2
-      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
-      flows:
-        implicit: # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
-          authorizationUrl: https://oauth.yandex.com/authorize
-          tokenUrl: https://oauth.yandex.com/token
-          scopes: {}
+  - url: 'http://0.0.0.0'
 
 paths:
   /{url}:
@@ -29,7 +18,7 @@ paths:
 
       responses:
         308:
-          description: Succeful redirected
+          description: Succesful redirected
           content:
             text/plain:
               schema:
@@ -39,7 +28,7 @@ paths:
           description: Not find butty url
           content: { }
 
-  /butty/{url}:
+  /butty/{url}/:
     post:
       summary: create butty url
 
@@ -48,9 +37,6 @@ paths:
           in: path
           description: url for create butty url
           required: true
-
-      security:
-        - oAuth: []
 
       responses:
         200:
@@ -64,10 +50,6 @@ paths:
           description: Internal server error
           content: {}
 
-
-        401:
-          description: Non auth
-          content: {}
 
 
 
