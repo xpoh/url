@@ -8,7 +8,7 @@ RUN go get -d -v ./...
 
 RUN go build -o /app/url ./cmd/url/.
 
-FROM alpine:3.15
+FROM alpine:latest
 
 COPY --from=builder /app/url /app/url
 

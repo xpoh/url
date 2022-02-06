@@ -37,8 +37,10 @@ services:
       MYSQL_DATABASE: butty
       MYSQL_TIME_ZONE: '+03:00'
 
-  client:
-    image: nginx
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
     ports:
       - "80:80"
 
