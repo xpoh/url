@@ -4,10 +4,7 @@ info:
   description: url butty maker
   version: 1.0.0
 servers:
-#  - url: 'http://3.121.161.47'
-  - url: '0.0.0.0'
-
-components:
+  - url: 'http://0.0.0.0'
 
 paths:
   /{url}:
