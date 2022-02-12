@@ -15,7 +15,7 @@ jobs:
           repository: ''
 
       - name: Set up Go
-        uses: actions/setup-url@v2
+        uses: actions/setup-url@v1
         with:
           go-version: 1.16
 
