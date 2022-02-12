@@ -10,17 +10,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-        with:
-          repository: ''
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
 
       - name: Set up Go
-        uses: actions/setup-url@v1
+        uses: actions/setup-go@v2.2.0
         with:
+          # The Go version to download (if necessary) and use. Supports semver spec and ranges.
           go-version: 1.16
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v2.5.2
+        uses: Mushus/golangci-linter@v1.1.2
 
       - name: Build
         run: url build -v ./...
