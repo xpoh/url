@@ -22,8 +22,9 @@ jobs:
       - name: Run golangci-lint
         uses: Mushus/golangci-linter@v1.1.2
 
+      - name: Test
+        run: go test -v ./...
+        
       - name: Build
         run: go build -v ./...
 
-      - name: Test
-        run: go test -v ./...
