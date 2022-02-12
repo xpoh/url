@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+    <script>
+      try {
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var location_url = url.searchParams.get("location_url") || document.referrer || '';
+
+        // Safari iframe-cookie enable fix. See https://github.com/vitr/safari-cookie-in-iframe
+        document.cookie = 'wfb_safari_cookie=fixed; path=/';
+
+        // Redirect back to original url
+        if(location_url) {
+            window.location.replace(location_url);
+        }
+      } catch (e) {
+
+      }
+    </script>
+    <h3>
+        Setting Safari Intermediate Cookie for Forms...
+    </h3>
+    <p>
+        If you are not redirected automatically please <button onclick="history.back();">click here</button>
+    </p>
+</body>
+</html>

@@ -1,8 +1,16 @@
 module url
 
+// +heroku goVersion go1.17
+
 go 1.17
 
-require github.com/gin-gonic/gin v1.7.7
+require (
+	github.com/gin-gonic/gin v1.7.7
+	github.com/go-sql-driver/mysql v1.6.0
+	github.com/kelseyhightower/envconfig v1.4.0
+	go.uber.org/zap v1.20.0
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+)
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -16,7 +24,9 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
-	golang.org/x/sys v0.0.0-20200116001909-b77594299b42 // indirect
+	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

@@ -1,0 +1,7 @@
+POST http://localhost:8000/butty/rbc.ru
+
+###
+
+GET http://localhost:8000/a
+
+
