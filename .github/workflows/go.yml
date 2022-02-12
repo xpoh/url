@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          repository: ''
 
       - name: Set up Go
         uses: actions/setup-url@v2
