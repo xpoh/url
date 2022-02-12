@@ -2,24 +2,23 @@ package config
 
 import (
 	"gopkg.in/yaml.v3"
-	"log"
 	"os"
 )
 
 type yamlConfig struct{}
 
-func (y yamlConfig) load() Cfg {
+func (y yamlConfig) load() (Cfg, error) {
 	cfg := Cfg{}
 	yamlFile, err := os.ReadFile("config.yaml")
 
 	if err != nil {
-		log.Panicf("%v", err)
+		return cfg, err
 	}
 
 	err = yaml.Unmarshal(yamlFile, &cfg)
 
 	if err != nil {
-		log.Panicf("%v", err)
+		return cfg, err
 	}
-	return cfg
+	return cfg, nil
 }

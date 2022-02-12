@@ -9,32 +9,40 @@ import (
 var config *Cfg
 
 type ConfigLoader interface {
-	load() Cfg
+	load() (Cfg, error)
 }
 
 type Cfg struct {
 	Service struct {
-		WorkersCount   int           `yaml:"WorkersCount"`
-		LogLevel       zapcore.Level `yaml:"LogLevel"`
-		LinksLivesDays int           `yaml:"LinksLivesDays"`
+		WorkersCount   int           `yaml:"WorkersCount" envconfig:"WORKERS_COUNT"`
+		LogLevel       zapcore.Level `yaml:"LogLevel" envconfig:"LOG_LEVEL"`
+		LinksLivesDays int           `yaml:"LinksLivesDays" envconfig:"LINKS_LIVES_DAYS"`
 	}
 	Server struct {
 		Http struct {
-			Addr    string        `yaml:"addr"`
-			Timeout time.Duration `yaml:"timeout"`
+			Port    string        `yaml:"port" envconfig:"PORT"`
+			Timeout time.Duration `yaml:"timeout" envconfig:"TIMEOUT"`
 		}
 	}
 	Data struct {
 		Database struct {
-			Driver string `yaml:"driver"`
-			Source string `yaml:"source"`
+			Driver string `yaml:"driver" envconfig:"DB_DRIVER"`
+			Source string `yaml:"source" envconfig:"DATABASE_URL"`
 		}
 	}
 }
 
 func NewConfig() *Cfg {
 	log.Println("Load yaml config file...")
-	cfg := yamlConfig{}.load()
+	cfg, err := yamlConfig{}.load()
+	if err != nil {
+		log.Println("Error load config from yaml. Try from ENV")
+		cfg, err = envConfig{}.load()
+		if err != nil {
+			log.Panicf("%v", err)
+		}
+	}
+
 	log.Println("WorkersCount=", cfg.Service.WorkersCount)
 	log.Printf("%v\n", cfg)
 	config = &cfg

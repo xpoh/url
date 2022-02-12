@@ -26,5 +26,5 @@ func main() {
 	router := api.NewRouter()
 	bs.Logger.Debug("gin", zap.String("message", "gin created"))
 
-	bs.Logger.Fatal("Error start gin http api", zap.Error(router.Run(bs.Cfg.Server.Http.Addr)))
+	bs.Logger.Fatal("Error start gin http api", zap.Error(router.Run("0.0.0.0:"+bs.Cfg.Server.Http.Port)))
 }
