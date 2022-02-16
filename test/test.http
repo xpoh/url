@@ -1,7 +1,7 @@
-POST http://localhost:8000/butty/rbc.ru
+POST https://butty-url.herokuapp.com/butty/rbc.ru
 
 ###
 
-GET http://localhost:8000/a
+GET https://butty-url.herokuapp.com/a
 
 
