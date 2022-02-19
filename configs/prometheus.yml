@@ -15,17 +15,9 @@ rule_files:                   # список файлов с правилами 
 scrape_configs:               # список целей с конфигурацией
   # metrics_path defaults to '/metrics'
   # scheme defaults to 'http'.
-  - job_name: prometheus
+  - job_name: butty_urlCounter
     scrape_interval: 5s
     scrape_timeout: 2s
     honor_labels: true
     static_configs:
-      - targets: ['butty:9090']
-
-  - job_name: go_example
-    scrape_interval: 5s
-    scrape_timeout: 2s
-    honor_labels: true
-    scheme: http
-    static_configs:
-      - targets: ['butty:9090']
+      - targets: ['butty:9000']

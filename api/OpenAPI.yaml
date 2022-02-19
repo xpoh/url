@@ -28,13 +28,13 @@ paths:
           description: Not find butty url
           content: { }
 
-  /butty/{url}/:
+  /butty/:
     post:
       summary: create butty url
 
       parameters:
         - name: url
-          in: path
+          in: header
           description: url for create butty url
           required: true
 

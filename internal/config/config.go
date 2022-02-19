@@ -19,7 +19,8 @@ type Cfg struct {
 		LinksLivesDays int           `yaml:"LinksLivesDays" envconfig:"LINKS_LIVES_DAYS"`
 	}
 	Server struct {
-		Http struct {
+		ServerName string `yaml:"serverName" envconfig:"SERVER_NAME"`
+		Http       struct {
 			Port    string        `yaml:"port" envconfig:"PORT"`
 			Timeout time.Duration `yaml:"timeout" envconfig:"TIMEOUT"`
 		}

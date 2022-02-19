@@ -3,6 +3,7 @@ service:
   LogLevel: debug
   LinksLivesDays: 30
 server:
+  serverName: http://localhost
   http:
     port: 8000
     timeout: 1s
@@ -11,7 +12,4 @@ data:
     driver: mysql
 #    driver: inmemory
     source: butty:butty@tcp(mariadb:4001)/butty
-  redis:
-    addr: 127.0.0.1:6379
-    read_timeout: 0.2s
-    write_timeout: 0.2s
+
