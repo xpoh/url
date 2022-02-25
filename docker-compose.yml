@@ -17,6 +17,7 @@ services:
     ports:
       - "8000:8000"   # Default app port (host:container)
       - "40000:40000" # Go Debugger (host:container)
+      - "9000:9000"   # prometheus metrics
     shm_size: "2gb"
 
   ## MariaDB Database Server
@@ -46,8 +47,14 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.32.1
+    volumes:
+      - ./configs:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
       - "9090:9090"
+    restart: always
+
   grafana:
     image: grafana/grafana:7.4.0-ubuntu
     ports:

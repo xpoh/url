@@ -65,7 +65,7 @@ var routes = Routes{
 	{
 		"ButtyUrlPost",
 		http.MethodPost,
-		"/butty/:url/",
+		"/butty/",
 		ButtyUrlPost,
 	},
 

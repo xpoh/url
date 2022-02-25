@@ -1,7 +1,28 @@
+POST http://localhost:8000/butty/
+Content-Type: application/json
+
+{
+  "url": "https://gb.ru/lessons/193719/homework"
+}
+
+###
 POST https://butty-url.herokuapp.com/butty/rbc.ru
 
 ###
 
+POST http://localhost:8000/butty/rbc.ru
+
+###
+
+POST http://localhost:8000/butty/gb.ru/lessons/193719/homework
+
+
+###
+
 GET https://butty-url.herokuapp.com/a
+
+###
+
+GET http://localhost:8000/c
 
 

@@ -16,26 +16,37 @@ import (
 	"url/internal/butty"
 )
 
+type jUrl struct {
+	Url string `json:"url"`
+}
+
 // ButtyUrlPost - create butty url
 func ButtyUrlPost(c *gin.Context) {
 	bs := butty.GetService()
+	bs.UrlPostCounter.Inc()
 
-	param := c.Param("url")
-	bs.Logger.Debug("GET param", zap.String("url", param))
+	j := jUrl{}
+	err := c.BindJSON(&j)
+	if err != nil {
+		bs.Logger.Error("Error bing json from request")
+	}
+	bs.Logger.Info("Bind json from request", zap.String("url", j.Url))
 
-	buttyUrl, err := bs.Storage.NewButtyUrl(param)
+	buttyUrl, err := bs.Storage.NewButtyUrl(j.Url)
 	if err != nil {
 		bs.Logger.Error("NewButtyUrl", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Error create butty link"})
 		return
 	}
-	bs.Logger.Debug("GET return", zap.String("burl", buttyUrl))
-	c.JSON(http.StatusOK, gin.H{"url": buttyUrl})
+	bUrl := bs.Cfg.Server.ServerName + "/" + buttyUrl
+	bs.Logger.Debug("GET return", zap.String("burl", bUrl))
+	c.JSON(http.StatusOK, gin.H{"url": bUrl})
 }
 
 // ByButtyGet - redirect to url by butty
 func ByButtyGet(c *gin.Context) {
 	bs := butty.GetService()
+	bs.UrlGetCounter.Inc()
 
 	param := c.Param("url")
 	bs.Logger.Debug("GET param", zap.String("burl", param))
