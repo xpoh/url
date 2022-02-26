@@ -11,6 +11,7 @@ package main
 
 import (
 	"go.uber.org/zap"
+	"net/http"
 	"url/internal/api"
 	"url/internal/butty"
 )
@@ -24,6 +25,8 @@ func main() {
 	bs.Logger.Debug("service", zap.String("message", "Butty service run"))
 
 	router := api.NewRouter()
+	router.StaticFS("/web", http.Dir("web"))
+
 	bs.Logger.Debug("gin", zap.String("message", "gin created"))
 
 	bs.Logger.Fatal("Error start gin http api", zap.Error(router.Run("0.0.0.0:"+bs.Cfg.Server.Http.Port)))

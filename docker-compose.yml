@@ -38,13 +38,6 @@ services:
       MYSQL_DATABASE: butty
       MYSQL_TIME_ZONE: '+03:00'
 
-  nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile-nginx
-    ports:
-      - "80:80"
-
   prometheus:
     image: prom/prometheus:v2.32.1
     volumes:

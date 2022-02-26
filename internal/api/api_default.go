@@ -57,6 +57,7 @@ func ByButtyGet(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"message": "link not found"})
 		return
 	}
-	bs.Logger.Debug("GET return", zap.String("url", fullUrl))
-	c.JSON(http.StatusOK, gin.H{"url": fullUrl})
+	bs.Logger.Debug("redirect", zap.String("url", fullUrl))
+	c.Redirect(http.StatusMovedPermanently, fullUrl)
+	//c.JSON(http.StatusOK, gin.H{"url": fullUrl})
 }

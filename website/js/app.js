@@ -11,11 +11,10 @@ function logSubmit(event) {
         return await response.json();
     }
 
-    postData('http://localhost:63342/url_front/test.json', { "url": document.getElementById('longLink').value })
+    postData('http://localhost:8000/butty/', { "url": document.getElementById('longLink').value })
         .then((data) => {
             document.getElementById('longLink').value = data.url;
         });
 }
-
 const form = document.getElementById('urlSenderForm');
 form.addEventListener('submit', logSubmit);

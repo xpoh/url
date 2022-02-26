@@ -9,7 +9,7 @@ server:
     timeout: 1s
 data:
   database:
-    driver: mysql
-#    driver: inmemory
+#    driver: mysql
+    driver: inmemory
     source: butty:butty@tcp(mariadb:4001)/butty
 
