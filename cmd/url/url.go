@@ -25,7 +25,7 @@ func main() {
 	bs.Logger.Debug("service", zap.String("message", "Butty service run"))
 
 	router := api.NewRouter()
-	router.StaticFS("/web", http.Dir("web"))
+	router.StaticFS("/website", http.Dir("./website"))
 
 	bs.Logger.Debug("gin", zap.String("message", "gin created"))
 

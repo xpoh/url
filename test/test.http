@@ -1,4 +1,4 @@
-POST http://localhost:8000/butty/
+POST https://butty-url.herokuapp.com/butty/
 Content-Type: application/json
 
 {
