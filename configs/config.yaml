@@ -11,5 +11,5 @@ data:
   database:
 #    driver: mysql
     driver: inmemory
-    source: butty:butty@tcp(mariadb:4001)/butty
+    source: butty:butty@tcp(3.121.161.47:3306)/butty
 
