@@ -49,19 +49,7 @@ func NewRouter() *gin.Engine {
 	return router
 }
 
-// Index is the index handler.
-func Index(c *gin.Context) {
-	c.String(http.StatusOK, "Welcome to butty service (version ...)") // TODO Implement version
-}
-
 var routes = Routes{
-	{
-		"Index",
-		http.MethodGet,
-		"/",
-		Index,
-	},
-
 	{
 		"ButtyUrlPost",
 		http.MethodPost,

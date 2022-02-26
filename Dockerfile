@@ -14,6 +14,8 @@ COPY --from=builder /app/url /app/url
 
 COPY configs/config.yaml /app/config.yaml
 
+COPY website /app/web/
+
 WORKDIR /app
 
 ENTRYPOINT ["/app/url"]
