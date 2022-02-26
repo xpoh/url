@@ -3,7 +3,7 @@ service:
   LogLevel: debug
   LinksLivesDays: 30
 server:
-  serverName: http://localhost
+  serverName: https://butty-url.herokuapp.com
   http:
     port: 8000
     timeout: 1s
