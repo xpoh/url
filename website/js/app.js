@@ -11,7 +11,7 @@ function logSubmit(event) {
         return await response.json();
     }
 
-    postData('http://localhost:8000/butty/', { "url": document.getElementById('longLink').value })
+    postData('https://url-butty.herokuapp.com/butty/', { "url": document.getElementById('longLink').value })
         .then((data) => {
             document.getElementById('longLink').value = data.url;
         });
