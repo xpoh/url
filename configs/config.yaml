@@ -3,13 +3,13 @@ service:
   LogLevel: debug
   LinksLivesDays: 30
 server:
-  serverName: https://butty-url.herokuapp.com
+  serverName: http://localhost:8000
   http:
     port: 8000
     timeout: 1s
 data:
   database:
-#    driver: mysql
-    driver: inmemory
-    source: butty:butty@tcp(3.121.161.47:3306)/butty
+    driver: mysql
+#    driver: inmemory
+    source: butty:butty@tcp(mariadb:4001)/butty
 
