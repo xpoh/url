@@ -42,15 +42,10 @@ paths:
         200:
           description: Succeful redirected
           content:
-            text/plain:
+            application/json:
               schema:
                 type: string
                 format: URL
         500:
           description: Internal server error
           content: {}
-
-
-
-
-
