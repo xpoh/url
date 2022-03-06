@@ -9,7 +9,7 @@ run:
   # exit code when at least one issue was found, default is 1
   issues-exit-code: 1
 
-  # include test files or not, default is true
+  # include tests files or not, default is true
   tests: true
 
   # list of build tags, all linters use it. Default is empty list.
@@ -197,7 +197,7 @@ linters-settings:
     min-len: 3
     # minimum occurrences of constant string count to trigger issue, 3 by default
     min-occurrences: 3
-    # ignore test files, false by default
+    # ignore tests files, false by default
     ignore-tests: false
     # look for existing constants matching the values, true by default
     match-constant: true
@@ -250,12 +250,12 @@ linters-settings:
       rangeExprCopy:
         # size in bytes that makes the warning trigger (default 512)
         sizeThreshold: 512
-        # whether to check test functions (default true)
+        # whether to check tests functions (default true)
         skipTestFuncs: true
       rangeValCopy:
         # size in bytes that makes the warning trigger (default 128)
         sizeThreshold: 32
-        # whether to check test functions (default true)
+        # whether to check tests functions (default true)
         skipTestFuncs: true
       ruleguard:
         # Enable debug to identify which 'Where' condition was rejected.
@@ -302,10 +302,6 @@ linters-settings:
   godot:
     # comments to be checked: `declarations`, `toplevel`, or `all`
     scope: declarations
-    # list of regexps for excluding particular comment lines from check
-    exclude:
-    # example: exclude comments which contain numbers
-    # - '[0-9]+'
     # check that each sentence starts with a capital letter
     capital: false
 
@@ -536,7 +532,7 @@ linters-settings:
     strict: false
     # Please refer to https://github.com/yeya24/promlinter#usage for detailed usage.
     disabled-linters:
-    #  - "Help"
+      - "Help"
     #  - "MetricUnits"
     #  - "Counter"
     #  - "HistogramSummaryReserved"
@@ -625,7 +621,7 @@ linters-settings:
       begin: true
 
   tenv:
-    # The option `all` will run against whole test files (`_test.url`) regardless of method/function signatures.
+    # The option `all` will run against whole tests files (`_test.url`) regardless of method/function signatures.
     # By default, only methods that take `*testing.T`, `*testing.B`, and `testing.TB` as arguments are checked.
     all: false
 

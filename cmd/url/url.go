@@ -18,6 +18,5 @@ func main() {
 	butty.NewButtyService()
 	bs := butty.GetService()
 	bs.Router = api.NewRouter()
-
 	bs.Run()
 }

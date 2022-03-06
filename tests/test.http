@@ -1,4 +1,4 @@
-POST https://butty-url.herokuapp.com/butty/
+POST https://url-butty.herokuapp.com/butty/
 Content-Type: application/json
 
 {
