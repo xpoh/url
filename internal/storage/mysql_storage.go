@@ -1,3 +1,9 @@
+// Copyright 2022. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package storage implement interface and functions
+// for storage
 package storage
 
 import (
@@ -8,12 +14,14 @@ import (
 	"url/pkg/logger"
 )
 
+// MySqlStorage struct for Mysql and MariaDB storage connection
 type MySqlStorage struct {
 	db     *sql.DB
 	Cfg    *config.Cfg
 	Logger *zap.Logger
 }
 
+// NewMysqlStorage is a constructor for mysql storage
 func NewMysqlStorage() *MySqlStorage {
 	var err error
 	var m = &MySqlStorage{}
@@ -29,6 +37,7 @@ func NewMysqlStorage() *MySqlStorage {
 	return m
 }
 
+// Close graceful shutdown connection
 func (m *MySqlStorage) Close() {
 	m.db.Close()
 	m.Logger.Info("Closed connection to database")

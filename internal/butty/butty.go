@@ -1,3 +1,9 @@
+// Copyright 2022. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package butty is main app service for butty url
+// creation and using.
 package butty
 
 import (
@@ -16,21 +22,40 @@ import (
 	"url/pkg/logger"
 )
 
+// buttyService is a global variable for access to butty service
 var buttyService *Service
 
+// Service is a struct contains main services components
 type Service struct {
-	Cfg            *config.Cfg
-	Logger         *zap.Logger
-	Storage        storage.Storager
+	// Cfg is a struct for external configuration butty service
+	Cfg *config.Cfg
+
+	// Logger main logger services
+	Logger *zap.Logger
+
+	// Storage is a common Storage for butty and full links
+	Storage storage.Storager
+
+	// UrlPostCounter is counter for created butty links
 	UrlPostCounter prometheus.Counter
-	UrlGetCounter  prometheus.Counter
-	Router         *gin.Engine
-	ServerButty    http.Server
-	ServerProm     http.Server
+
+	// UrlGetCounter is counter for used butty links
+	UrlGetCounter prometheus.Counter
+
+	// Router is a implementation for openapi specs
+	Router *gin.Engine
+
+	// ServerButty is a http server for main service
+	ServerButty http.Server
+
+	// ServerProm is http server for prometheus metrics
+	ServerProm http.Server
 }
 
+// NewButtyService is a constructor for butty service
+// here create global variable buttyService with
+// selected configuration, logger and storage
 func NewButtyService() {
-
 	bs := Service{}
 	buttyService = &bs
 
@@ -50,6 +75,7 @@ func NewButtyService() {
 	bs.Logger.Debug("service", zap.String("message", "Created new butty service"))
 }
 
+// GetService return global service variable
 func GetService() *Service {
 	if buttyService == nil {
 		panic("butty service is nil")
@@ -57,6 +83,7 @@ func GetService() *Service {
 	return buttyService
 }
 
+// RunPrometheus start Prometheus http server
 func (bs *Service) RunPrometheus() {
 	bs.UrlPostCounter = prometheus.NewCounter(prometheus.CounterOpts{
 		Namespace: "butty",
@@ -89,12 +116,14 @@ func (bs *Service) RunPrometheus() {
 	bs.Logger.Info("Start prom metrics server")
 }
 
+// RunButty start butty http server
 func (bs *Service) RunButty() {
 	bs.Router.StaticFS("/website", http.Dir("./website"))
 	bs.Logger.Debug("gin", zap.String("message", "gin created"))
 	bs.Logger.Fatal("Error start gin http api", zap.Error(bs.Router.Run("0.0.0.0:"+bs.Cfg.Server.Http.Port)))
 }
 
+// Run start app with main services and wait SIGINT for gracefull shutdown
 func (bs *Service) Run() {
 	go bs.RunPrometheus()
 	go bs.RunButty()
@@ -123,4 +152,5 @@ func (bs *Service) Run() {
 		bs.Logger.Fatal("Server forced to shutdown: ", zap.Error(err))
 	}
 	bs.Logger.Info("Server shutdown.")
+	logger.CloseLogger()
 }
