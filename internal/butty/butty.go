@@ -42,7 +42,7 @@ type Service struct {
 	// UrlGetCounter is counter for used butty links
 	UrlGetCounter prometheus.Counter
 
-	// Router is a implementation for openapi specs
+	// Router is an implementation for openapi specs
 	Router *gin.Engine
 
 	// ServerButty is a http server for main service
@@ -110,7 +110,7 @@ func (bs *Service) RunPrometheus() {
 	err := bs.ServerProm.ListenAndServe()
 
 	if err != nil {
-		bs.Logger.Fatal("Error start promhttp server", zap.Error(err))
+		bs.Logger.Fatal("Error start prom http server", zap.Error(err))
 	}
 
 	bs.Logger.Info("Start prom metrics server")
@@ -123,7 +123,7 @@ func (bs *Service) RunButty() {
 	bs.Logger.Fatal("Error start gin http api", zap.Error(bs.Router.Run("0.0.0.0:"+bs.Cfg.Server.Http.Port)))
 }
 
-// Run start app with main services and wait SIGINT for gracefull shutdown
+// Run start app with main services and wait SIGINT for gracefully shutdown
 func (bs *Service) Run() {
 	go bs.RunPrometheus()
 	go bs.RunButty()
@@ -133,7 +133,7 @@ func (bs *Service) Run() {
 
 	<-c
 
-	bs.Logger.Info("Get signal SIGINT. Shutdowning service...")
+	bs.Logger.Info("Get signal SIGINT. Shutdown service...")
 	bs.Storage.Close()
 	bs.Logger.Info("Storage closed.")
 
