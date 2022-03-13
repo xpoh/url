@@ -38,10 +38,11 @@ type Service struct {
 
 	// UrlPostCounter is counter for created butty links
 	UrlPostCounter prometheus.Counter
+	PostCounter    uint32
 
 	// UrlGetCounter is counter for used butty links
 	UrlGetCounter prometheus.Counter
-
+	GetCounter    uint32
 	// Router is an implementation for openapi specs
 	Router *gin.Engine
 

@@ -11,9 +11,13 @@ function logSubmit(event) {
         return await response.json();
     }
 
-    postData('https://url-butty.herokuapp.com/butty/', { "url": document.getElementById('longLink').value })
+    postData('http://localhost/butty/', { "url": document.getElementById('longLink').value, "PostCount":0, "GetCount":0 })
+    // postData('https://url-butty.herokuapp.com/butty/', { "url": document.getElementById('longLink').value })
         .then((data) => {
             document.getElementById('longLink').value = data.url;
+            document.getElementById('postCount').value = data.PostCount;
+            document.getElementById('getCount').value = data.GetCount;
+
         });
 }
 const form = document.getElementById('urlSenderForm');

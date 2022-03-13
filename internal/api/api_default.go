@@ -24,6 +24,7 @@ type jUrl struct {
 func ButtyUrlPost(c *gin.Context) {
 	bs := butty.GetService()
 	bs.UrlPostCounter.Inc()
+	bs.PostCounter++
 
 	j := jUrl{}
 	err := c.BindJSON(&j)
@@ -40,13 +41,17 @@ func ButtyUrlPost(c *gin.Context) {
 	}
 	bUrl := bs.Cfg.Server.ServerName + "/" + buttyUrl
 	bs.Logger.Debug("GET return", zap.String("burl", bUrl))
-	c.JSON(http.StatusOK, gin.H{"url": bUrl})
+	c.JSON(http.StatusOK, gin.H{
+		"url":       bUrl,
+		"postCount": bs.PostCounter,
+		"getCount":  bs.GetCounter})
 }
 
 // ByButtyGet - redirect to url by butty
 func ByButtyGet(c *gin.Context) {
 	bs := butty.GetService()
 	bs.UrlGetCounter.Inc()
+	bs.GetCounter++
 
 	param := c.Param("url")
 	bs.Logger.Debug("GET param", zap.String("burl", param))
