@@ -1,9 +1,9 @@
 GOCMD=go
 GOTEST=$(GOCMD) test
 GOVET=$(GOCMD) vet
-BINARY_NAME=example
-VERSION?=0.0.0
-SERVICE_PORT?=3000
+BINARY_NAME=url
+VERSION?=0.0.1
+SERVICE_PORT?=8000
 DOCKER_REGISTRY?= #if set it should finished by /
 EXPORT_RESULT?=false # for CI please set EXPORT_RESULT to true
 
@@ -20,7 +20,7 @@ all: help
 ## Build:
 build: ## Build your project and put the output binary in out/bin/
 	mkdir -p out/bin
-	GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/$(BINARY_NAME) .
+	GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/$(BINARY_NAME) ./cmd/url/.
 
 clean: ## Remove build related file
 	rm -fr ./bin
