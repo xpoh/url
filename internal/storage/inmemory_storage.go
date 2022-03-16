@@ -1,3 +1,9 @@
+// Copyright 2022. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package storage implement interface and functions
+// for storage
 package storage
 
 import (
@@ -6,13 +12,14 @@ import (
 	"time"
 )
 
-// InMemoryStorage реализует хранилище ссылок в памяти
+// InMemoryStorage implement in memory storage
 type InMemoryStorage struct {
 	Storage     map[string]Link
 	FreeLinksId map[int64]bool
 	mux         sync.RWMutex
 }
 
+// NewInMemoryStorage is a constructor for in memory storage
 func NewInMemoryStorage() (*InMemoryStorage, error) {
 	var j int64
 	s := &InMemoryStorage{}
@@ -24,6 +31,7 @@ func NewInMemoryStorage() (*InMemoryStorage, error) {
 	return s, nil
 }
 
+// NotFindError implement error for not found url in butty storage
 type NotFindError struct{}
 
 func (n NotFindError) Error() string {
@@ -36,7 +44,7 @@ func (o OverFlowError) Error() string {
 	return "Overflow memory"
 }
 
-// getFullUrlByButty достает из хранилища ссылку по красивой ссылке
+// GetFullUrlByButty return butty url from storage
 func (i *InMemoryStorage) GetFullUrlByButty(buttyUrl string) (string, error) {
 	i.mux.RLock()
 	defer i.mux.RUnlock()
@@ -48,8 +56,10 @@ func (i *InMemoryStorage) GetFullUrlByButty(buttyUrl string) (string, error) {
 	return link.Url, nil
 }
 
-//newButtyUrl генерит и добавляет в хранилище новую ссылку,
-// считается, что у ссылки есть время жизни и в хранилище могут быть более красивые ссылки раньше
+//NewButtyUrl add new url in storage
+// in: full url for add
+// out: butty url and error if needed
+// function check if in url is in storage
 func (i *InMemoryStorage) NewButtyUrl(url string) (string, error) {
 	var j int64
 	i.mux.Lock()
@@ -69,6 +79,7 @@ func (i *InMemoryStorage) NewButtyUrl(url string) (string, error) {
 	return "", OverFlowError{}
 }
 
+// ClearOldLinks clean links with overflow time lives from config
 func (i *InMemoryStorage) ClearOldLinks(days int) error {
 	i.mux.Lock()
 	defer i.mux.Unlock()
@@ -82,5 +93,6 @@ func (i *InMemoryStorage) ClearOldLinks(days int) error {
 	return nil
 }
 
+// Close perfom actions for graceful shutdown inmemory storage
 func (i *InMemoryStorage) Close() {
 }

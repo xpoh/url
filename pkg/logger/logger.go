@@ -1,3 +1,8 @@
+// Copyright 2022. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package logger implement logger function
 package logger
 
 import (
@@ -7,13 +12,9 @@ import (
 
 var logger *zap.Logger
 
+// New is a constructor
 func New(loglevel zapcore.Level) *zap.Logger {
 	var err error
-	//var level zapcore.Level
-	//level, err = zapcore.ParseLevel(loglevel)
-	//if err != nil {
-	//	panic("Parse log level error!!!")
-	//}
 
 	logger, err = zap.NewProduction()
 
@@ -23,6 +24,7 @@ func New(loglevel zapcore.Level) *zap.Logger {
 	return logger
 }
 
+// CloseLogger use for gracefull close logger
 func CloseLogger() {
 	if logger == nil {
 		panic("Close nil logger error!!!")
@@ -33,6 +35,7 @@ func CloseLogger() {
 	}
 }
 
+// GetLogger return a global logger object
 func GetLogger() *zap.Logger {
 	if logger == nil {
 		panic("logger is nil!!!")

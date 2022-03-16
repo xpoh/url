@@ -1,3 +1,9 @@
+// Copyright 2022. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+// Package config implement extern configuration
+// for butty service
 package config
 
 import (
@@ -6,12 +12,17 @@ import (
 	"time"
 )
 
+// config global variable
 var config *Cfg
 
+// ConfigLoader loader config interface
 type ConfigLoader interface {
+	// load config from any source
+	// return Cfg structure or error
 	load() (Cfg, error)
 }
 
+// Cfg is a main config structure
 type Cfg struct {
 	Service struct {
 		WorkersCount   int           `yaml:"WorkersCount" envconfig:"WORKERS_COUNT"`
@@ -33,6 +44,7 @@ type Cfg struct {
 	}
 }
 
+// NewConfig is a constructor for config struct
 func NewConfig() *Cfg {
 	log.Println("Load yaml config file...")
 	cfg, err := yamlConfig{}.load()
@@ -50,6 +62,7 @@ func NewConfig() *Cfg {
 	return config
 }
 
+// GetConfig return global config structure
 func GetConfig() *Cfg {
 	if config == nil {
 		panic("get nil config error!!!")
